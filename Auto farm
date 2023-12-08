@@ -1,0 +1,27 @@
+-- Execute this script in Roblox Studio or the game console
+
+local Players = game:GetService("Players")
+
+function collectSnowflakes()
+    for _, snowflake in pairs(game.Workspace:FindPartsInRegion3(game.Workspace.CurrentCamera.CFrame.Position, Vector3.new(100, 100, 100), nil)) do
+        if snowflake:IsA("Model") and snowflake.Name == "Snowflake" then
+            -- Assuming the snowflake model has a ClickDetector named "ClickDetector"
+            local clickDetector = snowflake:FindFirstChild("ClickDetector")
+            if clickDetector then
+                clickDetector:Click()
+            end
+        end
+    end
+end
+
+-- Connect the function to the PlayerAdded event
+Players.PlayerAdded:Connect(function(player)
+    -- Delay a bit to ensure the player has fully loaded into the game
+    wait(2)
+    collectSnowflakes()
+end)
+
+-- If a player is already in the game when this script is executed, collect snowflakes immediately
+for _, player in pairs(Players:GetPlayers()) do
+    collectSnowflakes()
+end
